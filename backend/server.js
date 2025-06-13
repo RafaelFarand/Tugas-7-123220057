@@ -6,33 +6,42 @@ import router from "./routes/route.js";
 import db from "./config/database.js";
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Konversi __filename & __dirname (untuk ES module)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// === Middleware ===
+// ✅ CORS config yang benar:
+const allowedOrigins = [
+  "https://febagastugas7-dot-b-01-450713.uc.r.appspot.com"
+];
 
-// ✅ Setup CORS untuk frontend App Engine
 app.use(cors({
-  origin: 'https://febagastugas7-dot-b-01-450713.uc.r.appspot.com',
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  allowedHeaders: "Content-Type,Authorization"
 }));
 
-// ✅ Izinkan preflight request untuk semua route
-app.options('*', cors());
+// ✅ Pastikan OPTIONS dijawab
+app.options("*", cors());
 
-// Body parser untuk JSON
+// Body parser
 app.use(express.json());
 
-// Router untuk API
+// Router
 app.use(router);
 
-// Static files (optional)
+// Serve static
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// === Cek koneksi database ===
+// DB check
 (async () => {
   try {
     await db.authenticate();
@@ -42,12 +51,9 @@ app.use(express.static(path.join(__dirname, "../frontend")));
   }
 })();
 
-// === Default route ===
+// Default route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend", "index.html"));
 });
 
-// === Jalankan server ===
-app.listen(PORT, () => {
-  console.log(`Server started on http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
