@@ -1,4 +1,3 @@
-// Konfigurasi awal dan variabel global
 const API_URL = "https://be-1061342868557.us-central1.run.app";
 let accessToken = "";
 
