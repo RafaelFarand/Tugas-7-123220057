@@ -1,4 +1,5 @@
-const API_URL = "https://notes-1031435520100.us-central1.run.app";
+// Konfigurasi awal dan variabel global
+const API_URL = "https://be-1061342868557.us-central1.run.app";
 let accessToken = "";
 
 axios.defaults.withCredentials = true;
