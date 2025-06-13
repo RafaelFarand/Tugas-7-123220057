@@ -2,124 +2,68 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Catatan Aman</title>
-  <!-- Memuat Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Memuat CSS Kustom -->
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; }
+    .container { max-width: 400px; margin: 50px auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
+    h1, h2 { text-align: center; }
+    input, textarea { width: 100%; padding: 8px; margin: 8px 0; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc; }
+    button { width: 100%; padding: 10px; border: none; border-radius: 4px; background: #007bff; color: #fff; font-weight: bold; margin: 8px 0; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    .link { color: #007bff; cursor: pointer; text-align: center; display: block; margin: 10px 0; }
+    .note { background: #f1f3f4; margin: 8px 0; padding: 10px; border-radius: 4px; position: relative; }
+    .note-title { font-weight: bold; }
+    .note-actions { position: absolute; right: 10px; top: 10px; }
+    .note-actions button { margin-left: 5px; background: #dc3545; }
+    .note-actions button.edit { background: #ffc107; color: #333; }
+    .hidden { display: none; }
+    .error { color: #dc3545; text-align: center; }
+    .success { color: #28a745; text-align: center; }
+  </style>
 </head>
-<body class="bg-gray-900 text-white">
-
-  <div class="container mx-auto p-4 md:p-8 max-w-4xl">
-    <!-- Halaman Login -->
+<body>
+  <div class="container">
+    <!-- Login Page -->
     <div id="login-page">
-      <div class="max-w-md mx-auto bg-gray-800 p-8 rounded-xl shadow-lg mt-16">
-        <h1 class="text-3xl font-bold text-center mb-6">Login</h1>
-        <div id="login-error" class="text-red-400 text-center mb-4"></div>
-        <div class="space-y-4">
-          <input type="text" id="login-username" placeholder="Username" autocomplete="username" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500" />
-          <input type="email" id="login-email" placeholder="Email" autocomplete="email" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500" />
-          <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500" />
-        </div>
-        <button onclick="login()" class="w-full mt-6 p-3 bg-blue-600 rounded-lg font-bold hover:bg-blue-700 transition-colors">Login</button>
-        <span class="block text-center mt-4 text-blue-400 cursor-pointer hover:underline" onclick="showPage('register')">Belum punya akun? Daftar</span>
-      </div>
+      <h1>Login</h1>
+      <div id="login-error" class="error"></div>
+      <input type="text" id="login-username" placeholder="Username" autocomplete="username" />
+      <input type="email" id="login-email" placeholder="Email" autocomplete="email" />
+      <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" />
+      <button onclick="login()">Login</button>
+      <span class="link" onclick="showPage('register')">Belum punya akun? Daftar</span>
     </div>
 
-    <!-- Halaman Register -->
+    <!-- Register Page -->
     <div id="register-page" class="hidden">
-      <div class="max-w-md mx-auto bg-gray-800 p-8 rounded-xl shadow-lg mt-16">
-        <h1 class="text-3xl font-bold text-center mb-6">Register</h1>
-        <div id="register-error" class="text-red-400 text-center mb-4"></div>
-        <div class="space-y-4">
-          <input type="text" id="register-username" placeholder="Username" autocomplete="username" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500" />
-          <input type="email" id="register-email" placeholder="Email" autocomplete="email" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500" />
-          <input type="password" id="register-password" placeholder="Password" autocomplete="new-password" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500" />
-          <input type="password" id="register-confirm" placeholder="Konfirmasi Password" autocomplete="new-password" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500" />
-        </div>
-        <button onclick="register()" class="w-full mt-6 p-3 bg-blue-600 rounded-lg font-bold hover:bg-blue-700 transition-colors">Daftar</button>
-        <span class="block text-center mt-4 text-blue-400 cursor-pointer hover:underline" onclick="showPage('login')">Sudah punya akun? Login</span>
-      </div>
+      <h1>Register</h1>
+      <div id="register-error" class="error"></div>
+      <input type="text" id="register-username" placeholder="Username" autocomplete="username" />
+      <input type="email" id="register-email" placeholder="Email" autocomplete="email" />
+      <input type="password" id="register-password" placeholder="Password" autocomplete="new-password" />
+      <input type="password" id="register-confirm" placeholder="Konfirmasi Password" autocomplete="new-password" />
+      <button onclick="register()">Daftar</button>
+      <span class="link" onclick="showPage('login')">Sudah punya akun? Login</span>
     </div>
 
-    <!-- Halaman Catatan -->
+    <!-- Notes Page -->
     <div id="notes-page" class="hidden">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-4xl font-bold">Notes</h2>
-            <button onclick="logout()" class="py-2 px-4 bg-red-600 rounded-lg font-semibold hover:bg-red-700 transition-colors">Logout</button>
-        </div>
-
-      <!-- Form Tambah/Edit Catatan -->
-      <div class="max-w-lg mx-auto bg-gray-800 p-6 rounded-xl shadow-lg mb-12">
-        <form id="note-form" onsubmit="event.preventDefault(); saveNote();">
-          <input type="hidden" id="note-id" />
-          <div class="space-y-4">
-            <div>
-              <label for="note-username" class="block mb-1 font-medium text-gray-400">Nama:</label>
-              <input type="text" id="note-username" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600" readonly />
-            </div>
-            <div>
-              <label for="note-title" class="block mb-1 font-medium text-gray-400">Judul:</label>
-              <input type="text" id="note-title" placeholder="Tulis judul catatan..." class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500" />
-            </div>
-            <div>
-              <label for="note-content" class="block mb-1 font-medium text-gray-400">Catatan:</label>
-              <textarea id="note-content" placeholder="Tulis isi catatan..." rows="4" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500"></textarea>
-            </div>
-          </div>
-          <div class="flex gap-4 mt-6">
-            <button type="submit" id="note-save-btn" class="w-full p-3 bg-blue-600 rounded-lg font-bold hover:bg-blue-700 transition-colors">Simpan</button>
-            <button type="button" id="note-cancel-btn" class="hidden w-full p-3 bg-gray-600 rounded-lg font-bold hover:bg-gray-700 transition-colors" onclick="cancelEdit()">Batal</button>
-          </div>
-        </form>
-      </div>
-      
-      <!-- Daftar Catatan -->
-      <h3 class="text-2xl font-bold text-center mb-6">Daftar Catatan</h3>
-      <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-        <table class="w-full text-left">
-          <thead class="bg-blue-600">
-            <tr>
-              <th class="p-4 w-16 text-center">No</th>
-              <th class="p-4">Nama</th>
-              <th class="p-4">Judul</th>
-              <th class="p-4">Catatan</th>
-              <th class="p-4 w-40 text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="note-list-body" class="divide-y divide-gray-700">
-            <!-- Catatan akan dimuat di sini oleh JavaScript -->
-          </tbody>
-        </table>
-        <div id="no-notes-message" class="hidden p-8 text-center text-gray-400">
-            Tidak ada catatan untuk ditampilkan.
-        </div>
-      </div>
+      <h2>Catatan</h2>
+      <div id="notes-success" class="success"></div>
+      <button onclick="logout()" style="background:#dc3545;">Logout</button>
+      <form id="note-form" onsubmit="event.preventDefault(); saveNote();">
+        <input type="text" id="note-title" placeholder="Judul Catatan" />
+        <textarea id="note-content" placeholder="Isi Catatan"></textarea>
+        <input type="hidden" id="note-id" />
+        <button type="submit" id="note-save-btn">Tambah Catatan</button>
+        <button type="button" id="note-cancel-btn" class="hidden" onclick="cancelEdit()">Batal Edit</button>
+      </form>
+      <div id="note-list"></div>
     </div>
   </div>
-
-    <!-- Modal Konfirmasi Hapus -->
-    <div id="delete-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-gray-800 rounded-lg p-8 shadow-xl max-w-sm w-full">
-            <h4 class="text-xl font-bold mb-4">Konfirmasi Hapus</h4>
-            <p class="text-gray-300 mb-6">Apakah Anda yakin ingin menghapus catatan ini?</p>
-            <div class="flex justify-end gap-4">
-                <button id="cancel-delete-btn" class="py-2 px-5 bg-gray-600 rounded-lg hover:bg-gray-500 transition-colors">Batal</button>
-                <button id="confirm-delete-btn" class="py-2 px-5 bg-red-600 rounded-lg hover:bg-red-500 transition-colors">Hapus</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Notifikasi -->
-    <div id="notification" class="hidden fixed bottom-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg animate-pulse">
-        <p id="notification-message"></p>
-    </div>
-
-
-  <!-- Memuat library Axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <!-- Memuat JavaScript Kustom -->
   <script src="index.js"></script>
 </body>
 </html>
