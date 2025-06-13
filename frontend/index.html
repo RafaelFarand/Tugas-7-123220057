@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catatan Aman</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; }
+    .container { max-width: 400px; margin: 50px auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
+    h1, h2 { text-align: center; }
+    input, textarea { width: 100%; padding: 8px; margin: 8px 0; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc; }
+    button { width: 100%; padding: 10px; border: none; border-radius: 4px; background: #007bff; color: #fff; font-weight: bold; margin: 8px 0; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    .link { color: #007bff; cursor: pointer; text-align: center; display: block; margin: 10px 0; }
+    .note { background: #f1f3f4; margin: 8px 0; padding: 10px; border-radius: 4px; position: relative; }
+    .note-title { font-weight: bold; }
+    .note-actions { position: absolute; right: 10px; top: 10px; }
+    .note-actions button { margin-left: 5px; background: #dc3545; }
+    .note-actions button.edit { background: #ffc107; color: #333; }
+    .hidden { display: none; }
+    .error { color: #dc3545; text-align: center; }
+    .success { color: #28a745; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Login Page -->
+    <div id="login-page">
+      <h1>Login</h1>
+      <div id="login-error" class="error"></div>
+      <input type="text" id="login-username" placeholder="Username" autocomplete="username" />
+      <input type="email" id="login-email" placeholder="Email" autocomplete="email" />
+      <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" />
+      <button onclick="login()">Login</button>
+      <span class="link" onclick="showPage('register')">Belum punya akun? Daftar</span>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register-page" class="hidden">
+      <h1>Register</h1>
+      <div id="register-error" class="error"></div>
+      <input type="text" id="register-username" placeholder="Username" autocomplete="username" />
+      <input type="email" id="register-email" placeholder="Email" autocomplete="email" />
+      <input type="password" id="register-password" placeholder="Password" autocomplete="new-password" />
+      <input type="password" id="register-confirm" placeholder="Konfirmasi Password" autocomplete="new-password" />
+      <button onclick="register()">Daftar</button>
+      <span class="link" onclick="showPage('login')">Sudah punya akun? Login</span>
+    </div>
+
+    <!-- Notes Page -->
+    <div id="notes-page" class="hidden">
+      <h2>Catatan</h2>
+      <div id="notes-success" class="success"></div>
+      <button onclick="logout()" style="background:#dc3545;">Logout</button>
+      <form id="note-form" onsubmit="event.preventDefault(); saveNote();">
+        <input type="text" id="note-title" placeholder="Judul Catatan" />
+        <textarea id="note-content" placeholder="Isi Catatan"></textarea>
+        <input type="hidden" id="note-id" />
+        <button type="submit" id="note-save-btn">Tambah Catatan</button>
+        <button type="button" id="note-cancel-btn" class="hidden" onclick="cancelEdit()">Batal Edit</button>
+      </form>
+      <div id="note-list"></div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
